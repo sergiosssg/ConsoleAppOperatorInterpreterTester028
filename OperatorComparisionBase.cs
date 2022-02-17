@@ -17,13 +17,13 @@ namespace ConsoleAppOperatorInterpreterTester028
 
     interface IOperatorPredicateForComparision<T>
     {
-
+        public delegate bool OperatorForComparision(T arg, OperatorSignLogic operatorLogic, OperatorForComparision operatorForComparision);
     }
 
 
     interface IOperatorForComparision<T>
     {
-
+        public bool ComparisionSimpleOperator(T arg, OperatorSignLogic operatorLogic, IOperatorPredicateForComparision<T> operatorPredicateForComparision);
     }
 
 
