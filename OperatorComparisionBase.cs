@@ -27,7 +27,10 @@ namespace ConsoleAppOperatorInterpreterTester028
     }
 
 
+    interface ICriteriaOfFilterChainLink<T>
+    {
 
+    }
 
 
 }
