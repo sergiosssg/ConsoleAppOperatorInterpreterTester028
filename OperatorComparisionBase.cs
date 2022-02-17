@@ -17,13 +17,13 @@ namespace ConsoleAppOperatorInterpreterTester028
 
     interface IOperatorPredicateForComparision<T>
     {
-        public delegate bool OperatorForComparision(T arg, OperatorSignLogic operatorLogic, OperatorForComparision operatorForComparision);
+        public delegate bool OperatorForComparision(T arg1,T arg2, OperatorSignLogic operatorLogic, OperatorForComparision operatorForComparision);
     }
 
 
     interface IOperatorForComparision<T>
     {
-        public bool ComparisionSimpleOperator(T arg, OperatorSignLogic operatorLogic, IOperatorPredicateForComparision<T> operatorPredicateForComparision);
+        public bool ComparisionSimpleOperator(T arg1 ,T arg2, OperatorSignLogic operatorLogic, IOperatorPredicateForComparision<T> operatorPredicateForComparision);
     }
 
 
@@ -31,6 +31,7 @@ namespace ConsoleAppOperatorInterpreterTester028
     {
 
     }
+
 
     class CriteriaOfFilterChainLink<T> : ICriteriaOfFilterChainLink<T>
     {
@@ -100,6 +101,20 @@ namespace ConsoleAppOperatorInterpreterTester028
             {
                 this._operatorSignLogic = value;
             }
+        }
+    }
+
+
+    /// <summary>
+    ///  New classes  should be  added  to  working  project
+    /// </summary>
+
+    class DelegateWithCriteriaOfFilterChainLink<T>
+    {
+
+        DelegateWithCriteriaOfFilterChainLink()
+        {
+
         }
     }
 

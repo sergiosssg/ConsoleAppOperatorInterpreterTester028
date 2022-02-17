@@ -34,6 +34,8 @@ namespace ConsoleAppOperatorInterpreterTester028
         };
 
 
+        
+
 
         static void Main(string[] args)
         {
