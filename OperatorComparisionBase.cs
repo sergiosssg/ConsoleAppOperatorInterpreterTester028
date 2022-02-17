@@ -5,6 +5,8 @@ using System.Text;
 namespace ConsoleAppOperatorInterpreterTester028
 {
 
+    delegate bool DelegateOperatorForComparision<T>(T arg1, T arg2, OperatorSignLogic operatorLogic);
+
     enum OperatorSignComparision
     {
         _EQ_, _NE_, _GT_, _LT_, _GE_, _LE_, _BETWEEN_STRICT_, _BETWEEN_STRICT_LEFT_, _BETWEEN_STRICT_RIGHT_, _BETWEEN_NO_STRICT_, _REGEX_
@@ -14,6 +16,9 @@ namespace ConsoleAppOperatorInterpreterTester028
     {
         _AND_, _OR_, _NOT_, _NIL_
     }
+
+
+    //public delegate bool DelegateOperatorForComparision(T arg1, T arg2, OperatorSignLogic operatorLogic, );
 
     interface IOperatorPredicateForComparision<T>
     {
@@ -106,11 +111,73 @@ namespace ConsoleAppOperatorInterpreterTester028
 
 
     /// <summary>
+    ///  Old classes, changed in this project
+    /// </summary>
+
+    class CriteriaOfFilter<T>  : IOperatorPredicateForComparision<T>
+    {
+        private IDictionary<CriteriaOfFilterChainLink<T>, DelegateOperatorForComparision<T>> _operatorComparisionDelegate;
+
+        public CriteriaOfFilter()
+        {
+            this._operatorComparisionDelegate = new Dictionary<CriteriaOfFilterChainLink<T>, DelegateOperatorForComparision<T>>();
+        }
+
+        public void Add(CriteriaOfFilterChainLink<T> oneCriteriaChain, DelegateOperatorForComparision<T> operatorPredicateComparision)
+        {
+            this._operatorComparisionDelegate.Add( oneCriteriaChain, operatorPredicateComparision);
+        }
+
+        public bool EvalOnAllCriteria(T arg)
+        {
+            bool resultOfEvaluation = false;
+            var criteriaOfFilterArray = this._operatorComparisionDelegate.Keys;
+
+
+            foreach (var criteriaChain in  criteriaOfFilterArray)
+            {
+                var argument2 = criteriaChain.ItemOfCriteria;
+                var operatorComparision = criteriaChain.OperatorComparision;
+                var operatorLogic = criteriaChain.OperatorLogic;
+
+                var operatorOfComparision = this._operatorComparisionDelegate[criteriaChain];
+
+                if (operatorLogic == OperatorSignLogic._AND_)
+                {
+                    //operatorOfComparision (arg, argument2, operatorLogic);
+                }
+                else if (operatorLogic == OperatorSignLogic._OR_)
+                {
+
+                }else if (operatorLogic == OperatorSignLogic._NOT_)
+                {
+
+                }else if (operatorLogic == OperatorSignLogic._NIL_)
+                {
+
+                }
+            }
+
+            return resultOfEvaluation;
+        }
+
+        public bool EvalOnParticularCriteria(T arg, IEnumerable<CriteriaOfFilterChainLink<T>> criteriasOfFilter)
+        {
+
+            return false;
+        }
+
+
+    }
+
+    /// <summary>
     ///  New classes  should be  added  to  working  project
     /// </summary>
 
     class DelegateWithCriteriaOfFilterChainLink<T>
     {
+
+        IOperatorPredicateForComparision<T> _operatorPredicateForComparision1;
 
         DelegateWithCriteriaOfFilterChainLink()
         {
