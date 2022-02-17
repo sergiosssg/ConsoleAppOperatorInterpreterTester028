@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppOperatorInterpreterTester028", "ConsoleAppOperatorInterpreterTester028.csproj", "{50C26C66-C16C-4E4A-944A-0970C8F1270E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50C26C66-C16C-4E4A-944A-0970C8F1270E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C26C66-C16C-4E4A-944A-0970C8F1270E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C26C66-C16C-4E4A-944A-0970C8F1270E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C26C66-C16C-4E4A-944A-0970C8F1270E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30692F34-EE13-4698-BA1D-91561506C211}
+	EndGlobalSection
+EndGlobal
