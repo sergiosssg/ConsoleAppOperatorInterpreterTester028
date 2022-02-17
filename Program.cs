@@ -6,7 +6,7 @@ namespace ConsoleAppOperatorInterpreterTester028
     class Program
     {
 
-        static public readonly ICollection<TEL_VID_CONNECT> TEL_VID_CONNECTs = PrepareCollectionByPopulationOf_TEL_VID_CONNECT();
+        static public readonly IEnumerable<TEL_VID_CONNECT> TEL_VID_CONNECTs = PrepareCollectionByPopulationOf_TEL_VID_CONNECT();
 
 
 
