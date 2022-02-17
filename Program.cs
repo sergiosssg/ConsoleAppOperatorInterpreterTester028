@@ -73,7 +73,7 @@ namespace ConsoleAppOperatorInterpreterTester028
             eightthElement.Id = 8; eightthElement.KodOfConnect = "08"; eightthElement.Name = "Сервис";
             tel_vid_connects.Add(eightthElement);
 
-            return null;
+            return tel_vid_connects;
         }
 
 
