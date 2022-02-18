@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ConsoleAppOperatorInterpreterTester028
@@ -115,7 +116,12 @@ namespace ConsoleAppOperatorInterpreterTester028
 
             Program.CriteriaOfFilterCollection = PrepareCollectionOfComparisionCriteria(criteriasOfConditionList);
 
-            ;
+            var foundElOf_TEL_VID_CONNECTs = from el in Program.TEL_VID_CONNECTs where Program.CriteriaOfFilterCollection.EvalOnAllCriteria(el) orderby el.Id select el;
+
+            foreach (var oneOfFound in foundElOf_TEL_VID_CONNECTs)
+            {
+                Console.WriteLine(" %d \t %s \t  %s", oneOfFound.Id, oneOfFound.KodOfConnect, oneOfFound.Name);
+            }
         }
 
 
