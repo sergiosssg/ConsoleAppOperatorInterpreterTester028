@@ -5,7 +5,7 @@ using System.Text;
 namespace ConsoleAppOperatorInterpreterTester028
 {
 
-    delegate bool DelegateOperatorForComparision<T>(T arg1, T arg2, OperatorSignLogic operatorLogic);
+    delegate bool DelegateOperatorForComparision<T>(T arg1, T arg2, OperatorSignComparision operatorLogic);
 
     enum OperatorSignComparision
     {
@@ -14,7 +14,7 @@ namespace ConsoleAppOperatorInterpreterTester028
 
     enum OperatorSignLogic
     {
-        _AND_, _OR_, _NOT_, _NIL_
+        _AND_, _OR_, _AND_NOT_, _OR_NOT_, _NIL_
     }
 
 
@@ -22,13 +22,13 @@ namespace ConsoleAppOperatorInterpreterTester028
 
     interface IOperatorPredicateForComparision<T>
     {
-        public delegate bool OperatorForComparision(T arg1,T arg2, OperatorSignLogic operatorLogic, OperatorForComparision operatorForComparision);
+        public delegate bool OperatorForComparision(T arg1, T arg2, OperatorSignLogic operatorLogic, OperatorForComparision operatorForComparision);
     }
 
 
     interface IOperatorForComparision<T>
     {
-        public bool ComparisionSimpleOperator(T arg1 ,T arg2, OperatorSignLogic operatorLogic, IOperatorPredicateForComparision<T> operatorPredicateForComparision);
+        public bool ComparisionSimpleOperator(T arg1, T arg2, OperatorSignLogic operatorLogic, IOperatorPredicateForComparision<T> operatorPredicateForComparision);
     }
 
 
@@ -114,7 +114,7 @@ namespace ConsoleAppOperatorInterpreterTester028
     ///  Old classes, changed in this project
     /// </summary>
 
-    class CriteriaOfFilter<T>  : IOperatorPredicateForComparision<T>
+    class CriteriaOfFilter<T> : IOperatorPredicateForComparision<T>
     {
         private IDictionary<CriteriaOfFilterChainLink<T>, DelegateOperatorForComparision<T>> _operatorComparisionDelegate;
 
@@ -125,7 +125,7 @@ namespace ConsoleAppOperatorInterpreterTester028
 
         public void Add(CriteriaOfFilterChainLink<T> oneCriteriaChain, DelegateOperatorForComparision<T> operatorPredicateComparision)
         {
-            this._operatorComparisionDelegate.Add( oneCriteriaChain, operatorPredicateComparision);
+            this._operatorComparisionDelegate.Add(oneCriteriaChain, operatorPredicateComparision);
         }
 
         public bool EvalOnAllCriteria(T arg)
@@ -133,8 +133,10 @@ namespace ConsoleAppOperatorInterpreterTester028
             bool resultOfEvaluation = false;
             var criteriaOfFilterArray = this._operatorComparisionDelegate.Keys;
 
+            int iIndx = 0;
 
-            foreach (var criteriaChain in  criteriaOfFilterArray)
+
+            foreach (var criteriaChain in criteriaOfFilterArray)
             {
                 var argument2 = criteriaChain.ItemOfCriteria;
                 var operatorComparision = criteriaChain.OperatorComparision;
@@ -142,20 +144,31 @@ namespace ConsoleAppOperatorInterpreterTester028
 
                 var operatorOfComparision = this._operatorComparisionDelegate[criteriaChain];
 
-                if (operatorLogic == OperatorSignLogic._AND_)
+                if (iIndx++ == 0)
                 {
-                    //operatorOfComparision (arg, argument2, operatorLogic);
+                    resultOfEvaluation = operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._AND_)
+                {
+                    resultOfEvaluation &= operatorOfComparision(arg, argument2, operatorComparision);
                 }
                 else if (operatorLogic == OperatorSignLogic._OR_)
                 {
-
-                }else if (operatorLogic == OperatorSignLogic._NOT_)
-                {
-
-                }else if (operatorLogic == OperatorSignLogic._NIL_)
-                {
-
+                    resultOfEvaluation |= operatorOfComparision(arg, argument2, operatorComparision);
                 }
+                else if (operatorLogic == OperatorSignLogic._AND_NOT_)
+                {
+                    resultOfEvaluation &= !operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._OR_NOT_)
+                {
+                    resultOfEvaluation |= !operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._NIL_)
+                {
+                    continue;
+                }
+                ;
             }
 
             return resultOfEvaluation;
@@ -163,8 +176,48 @@ namespace ConsoleAppOperatorInterpreterTester028
 
         public bool EvalOnParticularCriteria(T arg, IEnumerable<CriteriaOfFilterChainLink<T>> criteriasOfFilter)
         {
+            bool resultOfEvaluation = false;
+            var criteriaOfFilterArray = this._operatorComparisionDelegate.Keys;
 
-            return false;
+            int iIndx = 0;
+
+            foreach (var criteriaChain in criteriasOfFilter)
+            {
+                var argument2 = criteriaChain.ItemOfCriteria;
+                var operatorComparision = criteriaChain.OperatorComparision;
+                var operatorLogic = criteriaChain.OperatorLogic;
+
+                var operatorOfComparision = this._operatorComparisionDelegate[criteriaChain];
+
+                if (iIndx++ == 0)
+                {
+                    resultOfEvaluation = operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._AND_)
+                {
+                    resultOfEvaluation &= operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._OR_)
+                {
+                    resultOfEvaluation |= operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._AND_NOT_)
+                {
+                    resultOfEvaluation &= !operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._OR_NOT_)
+                {
+                    resultOfEvaluation |= !operatorOfComparision(arg, argument2, operatorComparision);
+                }
+                else if (operatorLogic == OperatorSignLogic._NIL_)
+                {
+                    continue;
+                }
+                ;
+            }
+
+
+            return resultOfEvaluation;
         }
 
 

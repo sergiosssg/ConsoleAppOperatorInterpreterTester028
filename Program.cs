@@ -30,7 +30,8 @@ namespace ConsoleAppOperatorInterpreterTester028
         {
             { "AND", OperatorSignLogic._AND_ },
             { "OR", OperatorSignLogic._OR_},
-            { "NOT", OperatorSignLogic._NOT_}
+            { "AND NOT", OperatorSignLogic._AND_NOT_},
+            { "OR NOT", OperatorSignLogic._OR_NOT_}
         };
 
 
