@@ -14,26 +14,25 @@ namespace ConsoleAppOperatorInterpreterTester028
         {
             { OperatorSignComparision._EQ_, (arg1, arg2, operatorComparision)=> ( operatorComparision == OperatorSignComparision._EQ_) && (( arg1.Id == arg2.Id ) || ( arg1.KodOfConnect.Equals(arg2.KodOfConnect) ) || ( arg1.Name.Equals( arg2.Name))) },
             { OperatorSignComparision._NE_, (arg1, arg2, operatorComparision)=> ( operatorComparision == OperatorSignComparision._NE_) && (( arg1.Id != arg2.Id ) && ( !arg1.KodOfConnect.Equals(arg2.KodOfConnect) ) && ( !arg1.Name.Equals( arg2.Name))) },
-            { OperatorSignComparision._GT_, (arg1, arg2, operatorComparision)=> { 
-                                                                 return ( operatorComparision == OperatorSignComparision._GT_) && 
+            { OperatorSignComparision._GT_, (arg1, arg2, operatorComparision)=> {
+                                                                 return ( operatorComparision == OperatorSignComparision._GT_) &&
                                                                               (( arg1.Id > arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) > 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) > 0)); } },
-            { OperatorSignComparision._LT_, (arg1, arg2, operatorComparision)=> { 
+            { OperatorSignComparision._LT_, (arg1, arg2, operatorComparision)=> {
                                                                  return ( operatorComparision == OperatorSignComparision._LT_) &&
                                                                               (( arg1.Id < arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) < 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) < 0)); } },
-            { OperatorSignComparision._GE_, (arg1, arg2, operatorComparision)=> { 
+            { OperatorSignComparision._GE_, (arg1, arg2, operatorComparision)=> {
                                                                  return ( operatorComparision == OperatorSignComparision._GE_) &&
                                                                               (( arg1.Id >= arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) >= 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) >= 0)); } },
-            { OperatorSignComparision._LE_, (arg1, arg2, operatorComparision)=> { 
+            { OperatorSignComparision._LE_, (arg1, arg2, operatorComparision)=> {
                                                                  return ( operatorComparision == OperatorSignComparision._LE_) &&
                                                                               (( arg1.Id <= arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) <= 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) <= 0)); } },
-            { OperatorSignComparision._REGEX_, (arg1, arg2, operatorComparision)=> { 
-                                                                 var regexTemplate = (arg2.KodOfConnect != string.Empty)? new Regex(arg2.KodOfConnect, RegexOptions.IgnoreCase) : (arg2.Name != string.Empty)? new Regex(arg2.Name, RegexOptions.IgnoreCase) : new Regex(""); 
-                                                                 return ( operatorComparision == OperatorSignComparision._REGEX_) && 
-                                                                              ( arg1.KodOfConnect != null  &&   !arg1.KodOfConnect.Equals(string.Empty) && regexTemplate.IsMatch(arg1.KodOfConnect) ||  
+            { OperatorSignComparision._REGEX_, (arg1, arg2, operatorComparision)=> {
+                                                                 var regexTemplate = (arg2.KodOfConnect != string.Empty)? new Regex(arg2.KodOfConnect, RegexOptions.IgnoreCase) : (arg2.Name != string.Empty)? new Regex(arg2.Name, RegexOptions.IgnoreCase) : new Regex("");
+                                                                 return ( operatorComparision == OperatorSignComparision._REGEX_) &&
+                                                                              ( arg1.KodOfConnect != null  &&   !arg1.KodOfConnect.Equals(string.Empty) && regexTemplate.IsMatch(arg1.KodOfConnect) ||
                                                                               ( arg1.Name != null  &&   !arg1.Name.Equals(string.Empty) &&  regexTemplate.IsMatch( arg1.Name))); }}
         };
 
-        static public CriteriaOfFilter<TEL_VID_CONNECT> CriteriaOfFilterCollection = PrepareCollectionOfComparisionCriteria();
 
 
         public readonly static IDictionary<string, OperatorSignComparision> OperatorSignComparisionStrings = new Dictionary<string, OperatorSignComparision>
@@ -62,12 +61,59 @@ namespace ConsoleAppOperatorInterpreterTester028
         };
 
 
-        
+        static public CriteriaOfFilter<TEL_VID_CONNECT> CriteriaOfFilterCollection;
+
 
 
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+
+            var criteriasOfConditionList = new List<CriteriaOfFilterChainLink<TEL_VID_CONNECT>>();
+
+            CriteriaOfFilterChainLink<TEL_VID_CONNECT> firstCtiteraOfCondition = new CriteriaOfFilterChainLink<TEL_VID_CONNECT>();
+            {
+                firstCtiteraOfCondition.ItemOfCriteria = new TEL_VID_CONNECT();
+                firstCtiteraOfCondition.ItemOfCriteria.Id = 2;
+                firstCtiteraOfCondition.OperatorComparision = OperatorSignComparision._GE_;
+                firstCtiteraOfCondition.OperatorLogic = OperatorSignLogic._AND_;
+            }
+            criteriasOfConditionList.Add(firstCtiteraOfCondition);
+
+            CriteriaOfFilterChainLink<TEL_VID_CONNECT> secondCtiteraOfCondition = new CriteriaOfFilterChainLink<TEL_VID_CONNECT>();
+            {
+                secondCtiteraOfCondition.ItemOfCriteria = new TEL_VID_CONNECT();
+                secondCtiteraOfCondition.ItemOfCriteria.KodOfConnect = "0[5-9]";
+                secondCtiteraOfCondition.OperatorComparision = OperatorSignComparision._REGEX_;
+                secondCtiteraOfCondition.OperatorLogic = OperatorSignLogic._OR_;
+            }
+            criteriasOfConditionList.Add(secondCtiteraOfCondition);
+
+            CriteriaOfFilterChainLink<TEL_VID_CONNECT> thirdCtiteraOfCondition = new CriteriaOfFilterChainLink<TEL_VID_CONNECT>();
+            {
+                thirdCtiteraOfCondition.ItemOfCriteria = new TEL_VID_CONNECT();
+                thirdCtiteraOfCondition.ItemOfCriteria.Name = "kiev star";
+                thirdCtiteraOfCondition.OperatorComparision = OperatorSignComparision._REGEX_;
+                thirdCtiteraOfCondition.OperatorLogic = OperatorSignLogic._OR_;
+            }
+            criteriasOfConditionList.Add(thirdCtiteraOfCondition);
+
+
+
+/*
+            CriteriaOfFilterChainLink<TEL_VID_CONNECT> forthCtiteraOfCondition = new CriteriaOfFilterChainLink<TEL_VID_CONNECT>();
+            {
+                forthCtiteraOfCondition.ItemOfCriteria = new TEL_VID_CONNECT();
+                forthCtiteraOfCondition.ItemOfCriteria.Id = 2;
+                forthCtiteraOfCondition.OperatorComparision = OperatorSignComparision._GE_;
+                forthCtiteraOfCondition.OperatorLogic = OperatorSignLogic._AND_;
+            }
+            criteriasOfConditionList.Add(forthCtiteraOfCondition);
+
+*/
+
+            Program.CriteriaOfFilterCollection = PrepareCollectionOfComparisionCriteria(criteriasOfConditionList);
 
             ;
         }
@@ -106,22 +152,18 @@ namespace ConsoleAppOperatorInterpreterTester028
             return tel_vid_connects;
         }
 
-        static CriteriaOfFilter<TEL_VID_CONNECT> PrepareCollectionOfComparisionCriteria()
+        static CriteriaOfFilter<TEL_VID_CONNECT> PrepareCollectionOfComparisionCriteria(IEnumerable<CriteriaOfFilterChainLink<TEL_VID_CONNECT>> criteriaOfFilterCollection)
         {
             CriteriaOfFilter<TEL_VID_CONNECT> collectionOfCriteria = new CriteriaOfFilter<TEL_VID_CONNECT>();
 
 
-            /*collectionOfCriteria.Add(OperatorSignComparision._EQ_, null);
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();
-            collectionOfCriteria.Add();*/
-
+            if (criteriaOfFilterCollection != null )
+            {
+                foreach (var oneCriteriaOfFilter in criteriaOfFilterCollection)
+                {
+                    collectionOfCriteria.Add(oneCriteriaOfFilter, MapComparisioOperatorToComparisionPredicate[oneCriteriaOfFilter.OperatorComparision]);
+                }
+            }
 
             return collectionOfCriteria;
         }
