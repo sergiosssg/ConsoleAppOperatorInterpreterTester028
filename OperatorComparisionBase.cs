@@ -222,20 +222,4 @@ namespace ConsoleAppOperatorInterpreterTester028
 
 
     }
-
-    /// <summary>
-    ///  New classes  should be  added  to  working  project
-    /// </summary>
-
-    class DelegateWithCriteriaOfFilterChainLink<T>
-    {
-
-        IOperatorPredicateForComparision<T> _operatorPredicateForComparision1;
-
-        DelegateWithCriteriaOfFilterChainLink()
-        {
-
-        }
-    }
-
 }
