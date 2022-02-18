@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ConsoleAppOperatorInterpreterTester028
 {
@@ -9,9 +10,35 @@ namespace ConsoleAppOperatorInterpreterTester028
         static public readonly IEnumerable<TEL_VID_CONNECT> TEL_VID_CONNECTs = PrepareCollectionByPopulationOf_TEL_VID_CONNECT();
 
 
+        static public readonly IDictionary<OperatorSignComparision, DelegateOperatorForComparision<TEL_VID_CONNECT>> MapComparisioOperatorToComparisionPredicate = new Dictionary<OperatorSignComparision, DelegateOperatorForComparision<TEL_VID_CONNECT>>()
+        {
+            { OperatorSignComparision._EQ_, (arg1, arg2, operatorComparision)=> ( operatorComparision == OperatorSignComparision._EQ_) && (( arg1.Id == arg2.Id ) || ( arg1.KodOfConnect.Equals(arg2.KodOfConnect) ) || ( arg1.Name.Equals( arg2.Name))) },
+            { OperatorSignComparision._NE_, (arg1, arg2, operatorComparision)=> ( operatorComparision == OperatorSignComparision._NE_) && (( arg1.Id != arg2.Id ) && ( !arg1.KodOfConnect.Equals(arg2.KodOfConnect) ) && ( !arg1.Name.Equals( arg2.Name))) },
+            { OperatorSignComparision._GT_, (arg1, arg2, operatorComparision)=> { 
+                                                                 return ( operatorComparision == OperatorSignComparision._GT_) && 
+                                                                              (( arg1.Id > arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) > 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) > 0)); } },
+            { OperatorSignComparision._LT_, (arg1, arg2, operatorComparision)=> { 
+                                                                 return ( operatorComparision == OperatorSignComparision._LT_) &&
+                                                                              (( arg1.Id < arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) < 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) < 0)); } },
+            { OperatorSignComparision._GE_, (arg1, arg2, operatorComparision)=> { 
+                                                                 return ( operatorComparision == OperatorSignComparision._GE_) &&
+                                                                              (( arg1.Id >= arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) >= 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) >= 0)); } },
+            { OperatorSignComparision._LE_, (arg1, arg2, operatorComparision)=> { 
+                                                                 return ( operatorComparision == OperatorSignComparision._LE_) &&
+                                                                              (( arg1.Id <= arg2.Id ) || (string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) <= 0) || (string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) <= 0)); } },
+            { OperatorSignComparision._REGEX_, (arg1, arg2, operatorComparision)=> { 
+                                                                 var regexTemplate = (arg2.KodOfConnect != string.Empty)? new Regex(arg2.KodOfConnect, RegexOptions.IgnoreCase) : (arg2.Name != string.Empty)? new Regex(arg2.Name, RegexOptions.IgnoreCase) : new Regex(""); 
+                                                                 return ( operatorComparision == OperatorSignComparision._REGEX_) && 
+                                                                              ( arg1.KodOfConnect != null  &&   !arg1.KodOfConnect.Equals(string.Empty) && regexTemplate.IsMatch(arg1.KodOfConnect) ||  
+                                                                              ( arg1.Name != null  &&   !arg1.Name.Equals(string.Empty) &&  regexTemplate.IsMatch( arg1.Name))); }}
+        };
+
+        static public CriteriaOfFilter<TEL_VID_CONNECT> CriteriaOfFilterCollection = PrepareCollectionOfComparisionCriteria();
+
 
         public readonly static IDictionary<string, OperatorSignComparision> OperatorSignComparisionStrings = new Dictionary<string, OperatorSignComparision>
         {
+            {  "=?=", OperatorSignComparision._REGEX_ },
             {  "==", OperatorSignComparision._EQ_ },
             { "!=", OperatorSignComparision._NE_},
             { ">", OperatorSignComparision._GT_},
@@ -79,6 +106,25 @@ namespace ConsoleAppOperatorInterpreterTester028
             return tel_vid_connects;
         }
 
+        static CriteriaOfFilter<TEL_VID_CONNECT> PrepareCollectionOfComparisionCriteria()
+        {
+            CriteriaOfFilter<TEL_VID_CONNECT> collectionOfCriteria = new CriteriaOfFilter<TEL_VID_CONNECT>();
+
+
+            /*collectionOfCriteria.Add(OperatorSignComparision._EQ_, null);
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();
+            collectionOfCriteria.Add();*/
+
+
+            return collectionOfCriteria;
+        }
 
     }
 }
