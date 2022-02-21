@@ -146,23 +146,28 @@ namespace ConsoleAppOperatorInterpreterTester028
 
                 if (iIndx++ == 0)
                 {
-                    resultOfEvaluation = operatorOfComparision(arg, argument2, operatorComparision);
+                    bool boolResult = operatorOfComparision(arg, argument2, operatorComparision);
+                    resultOfEvaluation = boolResult;
                 }
                 else if (operatorLogic == OperatorSignLogic._AND_)
                 {
-                    resultOfEvaluation &= operatorOfComparision(arg, argument2, operatorComparision);
+                    bool boolResult = operatorOfComparision(arg, argument2, operatorComparision);
+                    resultOfEvaluation &= boolResult;
                 }
                 else if (operatorLogic == OperatorSignLogic._OR_)
                 {
-                    resultOfEvaluation |= operatorOfComparision(arg, argument2, operatorComparision);
+                    bool boolResult = operatorOfComparision(arg, argument2, operatorComparision);
+                    resultOfEvaluation |= boolResult;
                 }
                 else if (operatorLogic == OperatorSignLogic._AND_NOT_)
                 {
-                    resultOfEvaluation &= !operatorOfComparision(arg, argument2, operatorComparision);
+                    bool boolResult = !operatorOfComparision(arg, argument2, operatorComparision);
+                    resultOfEvaluation &= boolResult;
                 }
                 else if (operatorLogic == OperatorSignLogic._OR_NOT_)
                 {
-                    resultOfEvaluation |= !operatorOfComparision(arg, argument2, operatorComparision);
+                    bool boolResult = !operatorOfComparision(arg, argument2, operatorComparision);
+                    resultOfEvaluation |= boolResult;
                 }
                 else if (operatorLogic == OperatorSignLogic._NIL_)
                 {
