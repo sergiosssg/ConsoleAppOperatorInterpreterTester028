@@ -30,7 +30,7 @@ namespace ConsoleAppOperatorInterpreterTester028
                                                                               string.Compare(arg1.Name, arg2.Name, StringComparison.OrdinalIgnoreCase) > 0)); } },
             { OperatorSignComparision._LT_, (arg1, arg2, operatorComparision)=> {
                                                                  return ( operatorComparision == OperatorSignComparision._LT_) &&
-                                                                              ( ( arg1.Id > arg2.Id ) ||
+                                                                              ( ( arg1.Id < arg2.Id ) ||
                                                                               (arg2.KodOfConnect != string.Empty &&
                                                                               string.Compare(arg1.KodOfConnect, arg2.KodOfConnect, StringComparison.OrdinalIgnoreCase) < 0) ||
                                                                               ( arg2.Name != string.Empty  &&
